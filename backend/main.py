@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket
 import time
+import bson
 import random
 app = FastAPI()
 
@@ -7,6 +8,8 @@ app = FastAPI()
 async def data(websocket: WebSocket):
     await websocket.accept()
     while True:
-        await websocket.send_text(str(random.randint(0,110)))
-        time.sleep(1)
+        a = str(random.randint(0,110))
+        data = bson.dumps({"number":a})
+        await websocket.send_bytes(data)
+        time.sleep(0.2)
 
